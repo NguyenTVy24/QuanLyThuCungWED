@@ -1,4 +1,4 @@
-# ĐÒ án kết thúc môn học
+# Đồ án kết thúc môn học
 ## Thành viên tham gia
 - 2051220169 Nguyễn Quốc Cường
 - 2051220067 Nguyên Ngô Hoàng Vũ
