@@ -11,3 +11,5 @@ class ThuCung(models.Model):
     sex = models.BooleanField(default=0)
     animal_type = models.CharField(max_length=200)
     pet_image = models.ImageField(default="")
+    def __str__(self):
+        return self.name_pet

@@ -1,11 +1,10 @@
 from django.shortcuts import render
-from rest_framework.decorators import api_view
-from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from .serializers import UserSerializer
 from django.http import JsonResponse
 from rest_framework.response import Response
 from .models import User
+
 import json
 # Create your views here.
 def home(request):
