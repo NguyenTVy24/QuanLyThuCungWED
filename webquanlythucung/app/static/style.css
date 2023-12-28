@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,700,900');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins',sans-serif;;
+}
+.wrapper{
+    width: 100%;
+    height: 100vh;
+}
+.header{
+    position: fixed;
+    background: #fff;
+    width: 100%;
+    padding: 0px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    top: 0%;
+    z-index: 10;
+}
+.logo img{
+    height: 100px;
+}
+.menu{
+    list-style: none;
+    display: flex;
+}
+.menu .item{
+    margin: 0px 25px;
+}
+.menu .item a{
+    color: rgb(34, 34, 34);
+    text-decoration: none;
+}
+.video-banner{
+    width: 100%;
+    height: 116%;
+    position: absolute;
+    z-index: -10;
+}
+.banner{
+    width: 100%;
+    height: 100%;
+    background: #0000008e;
+    display: flex;
+    padding: 200px 233px;
+    position: relative;
+}
+.banner .boxleft{
+    width: 50%;
+}
+.banner .boxleft h2{
+    font-size: 70px;
+    color: #fff;
+    border: #00000000;
+}
+.content{
+    height: 20vh;
+    background: #797979;
+    position: relative;
+}
+.grid-container{
+    position: relative;
+    z-index: 0;
+    background: #fff;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+.grid-container .grid-item{
+    position: relative;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+}
+.grid-container .grid-item video{
+    position: absolute;
+    width: 100%;
+}
+.grid-container .grid-item h2{
+    padding: 11vh 0;
+    text-align: center;
+    position: relative;
+    color: #fff;
+    font-size: 10vh;
+    font-weight: 10;
+    background: rgba(0, 0, 0, 0.596);
+}
+
