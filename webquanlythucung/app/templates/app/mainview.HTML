@@ -1,10 +1,12 @@
-{%load static%}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="{% static 'style.css' %}">
+	
+	<script src="{% static "logic.js" %}"></script>
 	<title>main view</title>
 	
 </head>
@@ -21,9 +23,9 @@
 				<div class="item">
 					<a href="">Pets</a>
 				</div>
-				<div class="item">
-					<a href="/login">Login</a>
-				</div>
+				<button class="item" id="connectButton" type="submit">
+					Connected Wallet
+				</button>
 			</nav>
 		</div>
 		<video class="video-banner" autoplay muted loop src="{% static "asset/dog1.mp4" %}"></video>
@@ -53,5 +55,59 @@
 			</div>
 		</div>
 	</div>
+	<script>
+		let accounts;
+		var walletAddress;
+		var isconnect = false;
+		const connectButton = document.getElementById('connectButton');
+		window.addEventListener('load', function() {
+			updateButtons();
+		});
+		document.getElementById('connectButton').addEventListener('click', connect);
+		function updateButtons() {
+			if (accounts) {
+				connectButton.textContent = "Connected: "+ walletAddress.substring(0,6) + "..."; 
+				isconnect = true;
+			} else {
+				connectButton.textContent = "Connected Wallet";
+				isconnect = false;
+			}
+		}
+		async function connect() {
+		  if(!isconnect){
+			try {
+				// Request account access if needed
+				accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+				walletAddress = accounts[0];
+				updateButtons();
+				sendPostRequest(walletAddress);
+			} catch (error) {
+				
+			}
+		  }else{
+			accounts = undefined;
+			updateButtons();
+		  }
+		}
+
+		// Check if MetaMask is installed
+		if (typeof window.ethereum !== 'undefined') {
+			const ethereum = window.ethereum;
+			const web3 = new Web3(ethereum);
+			// Listen for account changes
+			ethereum.on('accountsChanged', (newAccounts) => {
+				accounts = newAccounts.length > 0 ? newAccounts : undefined;
+				if (accounts) {
+					
+				} else {
+					console.log('MetaMask locked or account disconnected');
+					accounts = undefined;
+					updateButtons();
+				}
+			});
+		} else {
+			console.error('MetaMask not installed');
+		}
+	</script>
 </body>
 </html>
