@@ -61,7 +61,36 @@
 		var isconnect = false;
 		const connectButton = document.getElementById('connectButton');
 		window.addEventListener('load', function() {
-			updateButtons();
+			if (typeof window.ethereum !== 'undefined') {
+                window.ethereum.request({ method: 'eth_requestAccounts' })
+                .then(accounts => {
+                    const userAddress = accounts[0];
+                    console.log('User Address:', userAddress);
+                    connectButton.textContent = "Connected: "+ accounts[0].substring(0,6) + "..."; 
+                    isconnect = true;
+                    console.log('Account changed:', accounts[0]);
+                    var dataToSend = {
+                      key1: accounts[0],
+                      // Thêm các trường dữ liệu khác nếu cần
+                    };
+                    $.ajax({
+                      type: 'POST',
+                      url: '/your-django-endpoint/',
+                      contentType: 'application/json; charset=utf-8',
+                      data: JSON.stringify(dataToSend),
+                      success: function(response) {
+                          console.log('Response from Django:', response);
+                          // Xử lý phản hồi từ server nếu cần
+                      },
+                      error: function(error) {
+                          console.error('Error sending request to Django:', error);
+                      }
+                    });
+                })
+                .catch(error => {
+                    console.error('Error getting user accounts:', error);
+                });
+            }
 		});
 		document.getElementById('connectButton').addEventListener('click', connect);
 		function updateButtons() {
@@ -85,28 +114,33 @@
 				
 			}
 		  }else{
-			accounts = undefined;
-			updateButtons();
+			
 		  }
 		}
 
 		// Check if MetaMask is installed
-		if (typeof window.ethereum !== 'undefined') {
-			const ethereum = window.ethereum;
-			const web3 = new Web3(ethereum);
-			// Listen for account changes
-			ethereum.on('accountsChanged', (newAccounts) => {
-				accounts = newAccounts.length > 0 ? newAccounts : undefined;
-				if (accounts) {
-					
-				} else {
-					console.log('MetaMask locked or account disconnected');
-					accounts = undefined;
-					updateButtons();
-				}
+		if (window.ethereum) {
+			// Đăng ký sự kiện cho việc thay đổi tài khoản
+			window.ethereum.on('accountsChanged', function (Accounts) {
+			  if (Accounts.length > 0) {
+				// MetaMask đã kết nối và có ít nhất một địa chỉ tài khoản
+				console.log('MetaMask connected:', Accounts[0]);
+				accounts = Accounts;
+			  } else {
+				// MetaMask đã ngắt kết nối
+				console.log('MetaMask disconnected');
+				accounts = false;
+				updateButtons();
+			  }
+			});
+			// Đăng ký sự kiện cho việc thay đổi chuỗi (blockchain)
+			window.ethereum.on('chainChanged', function (chainId) {
+			  // Xử lý khi chuỗi thay đổi
+			  console.log('Chain changed:', chainId);
 			});
 		} else {
-			console.error('MetaMask not installed');
+			// MetaMask không được hỗ trợ hoặc không cài đặt
+			console.log('MetaMask not supported');
 		}
 	</script>
 </body>
