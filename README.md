@@ -7,4 +7,9 @@
 - Định danh thú cưng
 - Giúp người dùng xác thực thông tin của thú cưng
 - Truy xuất nguồn gốc của thú cưng
-
+## Cấu Trúc Đối Tượng Thú Cưng
+- Tên Pet: name_pet = models.CharField(max_length=200) 
+- Ngày Sinh: day_of_birth = models.DateTimeField()
+- Giới Tính: sex = models.BooleanField(default=0)
+- Giống: animal_type = models.CharField(max_length=200)
+- Hình Ảnh Pet: pet_image = models.ImageField(default="")
