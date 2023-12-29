@@ -1,14 +1,26 @@
+import os
+import solcx
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from .serializers import UserSerializer
 from django.http import JsonResponse
 from rest_framework.response import Response
 from .models import User
-
+from .models import ThuCung
+from solcx import compile_source
 import json
 # Create your views here.
 def home(request):
-    return render(request,'home.html')   
+    return render(request,'home.html')
+@csrf_exempt   
+def petshtml(request):
+    my_variable = request.GET.get('myVariable', None)
+    user = User.objects.get(idmetamaxk=my_variable)
+    thucung = ThuCung.objects.filter(user=user)
+    thucungdautien = ThuCung.objects.filter(id=1)
+    context = {'items': thucung,'itemsfine':thucungdautien}
+    return render(request,'app/Pets.HTML',context)
+
 @csrf_exempt
 def connectedMetaMask(request):
     if request.method == 'POST':

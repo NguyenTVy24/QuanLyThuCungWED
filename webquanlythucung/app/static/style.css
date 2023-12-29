@@ -151,11 +151,11 @@
     background: transparent;
     position: absolute;
     display: flex;
-    height: 15%;
+    height: 130px;
     width: 48.2%;
     left: 48%;
     gap: 5px;
-    bottom: 3%;
+    top: 80%;
     list-style: none;
     overflow: auto;
     white-space: nowrap;
@@ -167,7 +167,7 @@
     border: none;
     background: transparent;
     border-radius: 20px;
-    height: 90%;
+    height: 100px;
     width: 200px;
     text-align: center;
 }

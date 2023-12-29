@@ -1,8 +1,18 @@
-function newSmartContract(){
-    const Web3 = require('web3');
-    const fs = require('fs');
-    const web3 = new Web3('http://localhost:8545');
-    const contractSourceCode = fs.readFileSync('thucung.sol', 'utf-8');
+function newSmartContract(information){
+    var web3 = new Web3();
+    $.ajax({
+        type: 'POST',
+        url: '/getfilesolidity/',
+        contentType: 'application/json; charset=utf-8',
+        success: function(response) {
+            console.log('Response from Django:', response);
+
+            // Xử lý phản hồi từ server nếu cần
+        },
+        error: function(error) {
+            console.error('Error sending request to Django:', error);
+        }
+    });
     const contractCompiled = web3.eth.compileSolidity(contractSourceCode);
     const contractABI = contractCompiled.SimpleStorage.info.abiDefinition;
     const contractBytecode = contractCompiled.SimpleStorage.code;
@@ -11,7 +21,6 @@ function newSmartContract(){
     // thông tin cân thiết lập
     const father = "00000000000000000000";
     const mother = "00000000000000000000";
-    const information = "00000000000000000000";
     ///////////////////////
     contract.deploy({
         data: '0x' + contractBytecode,
@@ -22,8 +31,7 @@ function newSmartContract(){
         gas: '4700000',  // Gas limit
     })
     .then(newContractInstance => {
-        console.log('Contract deployed at:', newContractInstance.options.address);
-        
+        console.log('Contract deployed at:', newContractInstance.options.address); 
     })
     .catch(error => {
         console.error('Error deploying contract:', error);
