@@ -1,10 +1,12 @@
-{%load static%}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="{% static 'style.css' %}">
+	
+	<script src="{% static "logic.js" %}"></script>
 	<title>main view</title>
 	
 </head>
@@ -21,9 +23,9 @@
 				<div class="item">
 					<a href="">Pets</a>
 				</div>
-				<div class="item">
-					<a href="/login">Login</a>
-				</div>
+				<button class="item" id="connectButton" type="submit">
+					Connected Wallet
+				</button>
 			</nav>
 		</div>
 		<video class="video-banner"  src="{% static "asset/dog1.mp4" %}" autoplay muted loop></video>
@@ -53,5 +55,93 @@
 			</div>
 		</div>
 	</div>
+	<script>
+		let accounts;
+		var walletAddress;
+		var isconnect = false;
+		const connectButton = document.getElementById('connectButton');
+		window.addEventListener('load', function() {
+			if (typeof window.ethereum !== 'undefined') {
+                window.ethereum.request({ method: 'eth_requestAccounts' })
+                .then(accounts => {
+                    const userAddress = accounts[0];
+                    console.log('User Address:', userAddress);
+                    connectButton.textContent = "Connected: "+ accounts[0].substring(0,6) + "..."; 
+                    isconnect = true;
+                    console.log('Account changed:', accounts[0]);
+                    var dataToSend = {
+                      key1: accounts[0],
+                      // Thêm các trường dữ liệu khác nếu cần
+                    };
+                    $.ajax({
+                      type: 'POST',
+                      url: '/your-django-endpoint/',
+                      contentType: 'application/json; charset=utf-8',
+                      data: JSON.stringify(dataToSend),
+                      success: function(response) {
+                          console.log('Response from Django:', response);
+                          // Xử lý phản hồi từ server nếu cần
+                      },
+                      error: function(error) {
+                          console.error('Error sending request to Django:', error);
+                      }
+                    });
+                })
+                .catch(error => {
+                    console.error('Error getting user accounts:', error);
+                });
+            }
+		});
+		document.getElementById('connectButton').addEventListener('click', connect);
+		function updateButtons() {
+			if (accounts) {
+				connectButton.textContent = "Connected: "+ walletAddress.substring(0,6) + "..."; 
+				isconnect = true;
+			} else {
+				connectButton.textContent = "Connected Wallet";
+				isconnect = false;
+			}
+		}
+		async function connect() {
+		  if(!isconnect){
+			try {
+				// Request account access if needed
+				accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+				walletAddress = accounts[0];
+				updateButtons();
+				sendPostRequest(walletAddress);
+			} catch (error) {
+				
+			}
+		  }else{
+			
+		  }
+		}
+
+		// Check if MetaMask is installed
+		if (window.ethereum) {
+			// Đăng ký sự kiện cho việc thay đổi tài khoản
+			window.ethereum.on('accountsChanged', function (Accounts) {
+			  if (Accounts.length > 0) {
+				// MetaMask đã kết nối và có ít nhất một địa chỉ tài khoản
+				console.log('MetaMask connected:', Accounts[0]);
+				accounts = Accounts;
+			  } else {
+				// MetaMask đã ngắt kết nối
+				console.log('MetaMask disconnected');
+				accounts = false;
+				updateButtons();
+			  }
+			});
+			// Đăng ký sự kiện cho việc thay đổi chuỗi (blockchain)
+			window.ethereum.on('chainChanged', function (chainId) {
+			  // Xử lý khi chuỗi thay đổi
+			  console.log('Chain changed:', chainId);
+			});
+		} else {
+			// MetaMask không được hỗ trợ hoặc không cài đặt
+			console.log('MetaMask not supported');
+		}
+	</script>
 </body>
 </html>

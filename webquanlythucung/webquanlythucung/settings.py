@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -25,7 +25,6 @@ SECRET_KEY = 'django-insecure-vd07v!@71r&nr9e6ugyf(nre^l_a(i5)@cw7vyl317w5se&e)1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -37,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'app',
 ]
 
@@ -76,11 +76,15 @@ WSGI_APPLICATION = 'webquanlythucung.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': os.environ.get('DB_DRIVER','django.db.backends.postgresql'),
+        'USER': os.environ.get('PG_USER','root'),
+        'PASSWORD':os.environ.get('PG_PASSWORD','thanhvy2002@'),
+        'NAME': os.environ.get('PG_DB','postgres'),
+        'PORT': os.environ.get('PG_PORT','5432'),
+        'HOST': os.environ.get('PG_HOST','192.168.1.19'), # uses the container if set, otherwise it runs locally
     }
 }
-
+ALLOWED_HOSTS = ['localhost','127.0.0.1','192.168.1.10','192.168.1.19']
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -122,3 +126,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR,'app/static')
+]
+MEDIA_URL = '/asset/'
+MEDIA_ROOT = os.path.join(BASE_DIR,'app/static/asset')

@@ -13,3 +13,4 @@
 - Giới Tính: sex = models.BooleanField(default=0)
 - Giống: animal_type = models.CharField(max_length=200)
 - Hình Ảnh Pet: pet_image = models.ImageField(default="")
+## test thêm data 
