@@ -1,0 +1,106 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="{% static 'style.css' %}">
+	
+	<script src="{% static "logic.js" %}"></script>
+	<title>Pets</title>
+	
+</head>
+<body>
+    <img class="backgrond" src="{% static " asset/background1.jpg"%}">
+    <div class="wrapper">
+        <div class="header">
+			<a href="mainview.HTML" class="logo">
+				<img src="{% static "asset/logo.png" %}" alt="">
+			</a>
+			<nav class="menu">
+				<div class="item">
+					<a href="mainview.HTML">Home</a>
+				</div>
+				<div class="item">
+					<a href="Pets.HTML">Pets</a>
+				</div>
+				<button class="item" id="connectButton" type="submit">
+					Connected Wallet
+				</button>
+			</nav>
+		</div>
+    </div>
+    <div class="viewPets">
+        <img class="imagePet" src="{% static "asset/248.png" %}" alt="">
+        <div class="viewimfomation">
+            <div class="infomationtable">
+                <h1>name</h1>
+                <h3>description</h3>
+                <img class="left" src="{% static "asset/MetaMask.png" %}" alt="">
+                <img class="right" src="{% static "asset/MetaMask.png" %}" alt="">
+            </div>
+            
+            <ul class="listPets">
+                <li>
+                    <button class="Pet">
+                        <img class="fiter">
+                        <img src="{% static "asset/248.png" %}" alt="">
+                        <p>name</p>
+                    </button>
+                    <button class="Pet">
+                        <img class="fiter">
+                        <img src="{% static "asset/248.png" %}" alt="">
+                        <p>name</p>
+                    </button>
+                    <button class="Pet">
+                        <img class="fiter">
+                        <img src="{% static "asset/248.png" %}" alt="">
+                        <p>name</p>
+                    </button>
+                    <button class="Pet">
+                        <img class="fiter">
+                        <img src="{% static "asset/248.png" %}" alt="">
+                        <p>name</p>
+                    </button>
+                    <button class="Pet">
+                        <img class="fiter">
+                        <img src="{% static "asset/248.png" %}" alt="">
+                        <p>name</p>
+                    </button>
+                    <button class="Pet">
+                        <img class="fiter">
+                        <img src="{% static "asset/248.png" %}" alt="">
+                        <p>name</p>
+                    </button>
+                    <button class="Pet">
+                        <img class="fiter">
+                        <img src="{% static "asset/248.png" %}" alt="">
+                        <p>name</p>
+                    </button>
+                    <button class="Pet">
+                        <img class="fiter">
+                        <img src="{% static "asset/248.png" %}" alt="">
+                        <p>name</p>
+                    </button>
+                    <button class="Pet">
+                        <img class="fiter">
+                        <img src="{% static "asset/248.png" %}" alt="">
+                        <p>name</p>
+                    </button>
+                    <button class="Pet">
+                        <img class="fiter">
+                        <img src="{% static "asset/248.png" %}" alt="">
+                        <p>name</p>
+                    </button>
+                    <button class="Pet">
+                        <img class="fiter">
+                        <img src="{% static "asset/248.png" %}" alt="">
+                        <p>name</p>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</body>
+</html>
