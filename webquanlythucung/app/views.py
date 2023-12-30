@@ -2,12 +2,13 @@ import os
 import solcx
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view
 from .serializers import UserSerializer
+from .serializers import ThuCungSerializer
 from django.http import JsonResponse
 from rest_framework.response import Response
 from .models import User
 from .models import ThuCung
-from solcx import compile_source
 import json
 # Create your views here.
 def home(request):
@@ -20,6 +21,13 @@ def petshtml(request):
     thucungdautien = ThuCung.objects.filter(id=1)
     context = {'items': thucung,'itemsfine':thucungdautien}
     return render(request,'app/Pets.HTML',context)
+
+@api_view(['POST'])
+def add(request):
+    serializer = ThuCungSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+    return Response(serializer.data)
 
 @csrf_exempt
 def connectedMetaMask(request):
@@ -42,3 +50,14 @@ def connectedMetaMask(request):
         # Trả về lỗi nếu request không phải là POST
         response_data = {'status': 'error', 'message': 'Invalid request method'}
         return JsonResponse(response_data)
+
+@api_view(['GET'])
+def getFollowFather(request, pk):
+    thucung = ThuCung.objects.get(id=pk)
+    fatherthucung = ThuCung.objects.filter(id=thucung.father)
+    return JsonResponse(fatherthucung)
+@api_view(['GET'])
+def getFollowMother(request, pk):
+    thucung = ThuCung.objects.get(id=pk)
+    motherthucung = ThuCung.objects.filter(id=thucung.mother)
+    return JsonResponse(motherthucung)
