@@ -81,10 +81,10 @@ DATABASES = {
         'PASSWORD':os.environ.get('PG_PASSWORD','thanhvy2002@'),
         'NAME': os.environ.get('PG_DB','postgres'),
         'PORT': os.environ.get('PG_PORT','5432'),
-        'HOST': os.environ.get('PG_HOST','192.168.1.19'), # uses the container if set, otherwise it runs locally
+        'HOST': os.environ.get('PG_HOST','192.168.1.20'), # uses the container if set, otherwise it runs locally
     }
 }
-ALLOWED_HOSTS = ['localhost','127.0.0.1','192.168.1.10','192.168.1.19']
+ALLOWED_HOSTS = ['localhost','127.0.0.1','192.168.1.10','192.168.1.19','192.168.1.20']
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -130,5 +130,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR,'app/static')
 ]
-MEDIA_URL = '/asset/'
+MEDIA_URL = '/Pets.HTML/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'app/static/asset')

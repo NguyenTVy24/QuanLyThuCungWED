@@ -1,13 +1,19 @@
-function newSmartContract(information){
-    var web3 = new Web3();
-    const contract = new web3.eth.Contract(abi);
+function newSmartContract(){
+    const Web3 = require('web3');
+    const fs = require('fs');
+    const web3 = new Web3('http://localhost:8545');
+    const contractSourceCode = fs.readFileSync('thucung.sol', 'utf-8');
+    const contractCompiled = web3.eth.compileSolidity(contractSourceCode);
+    const contractABI = contractCompiled.SimpleStorage.info.abiDefinition;
+    const contractBytecode = contractCompiled.SimpleStorage.code;
+    const contract = new web3.eth.Contract(contractABI);
     const account = web3.eth.accounts.create();
     // thông tin cân thiết lập
     const father = '0x1234567890123456789012345678901234567890';
     const mother = '0x1234562345678901234789015678901234567890';
     ///////////////////////
     contract.deploy({
-        data: '0x' + bytecode,
+        data: '0x' + contractBytecode,
         arguments: [father,mother,information],
     })
     .send({
@@ -15,7 +21,8 @@ function newSmartContract(information){
         gas: '4700000',  // Gas limit
     })
     .then(newContractInstance => {
-        console.log('Contract deployed at:', newContractInstance.options.address); 
+        console.log('Contract deployed at:', newContractInstance.options.address);
+        
     })
     .catch(error => {
         console.error('Error deploying contract:', error);
