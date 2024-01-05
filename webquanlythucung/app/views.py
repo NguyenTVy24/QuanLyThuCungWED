@@ -3,9 +3,11 @@ import solcx
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
+from django.http import HttpRequest
 from .serializers import UserSerializer
 from .serializers import ThuCungSerializer
 from django.http import JsonResponse
+from app.blockchain_web3.pet_provider import PetProvider
 from rest_framework.response import Response
 from .models import User
 from .models import ThuCung
@@ -39,7 +41,7 @@ def connectedMetaMask(request):
         # Trả về phản hồi
         try:
             user = User.objects.get(idmetamaxk=value)
-            # Nếu đối tượng tồn tại, bạn có thể làm điều gì đó với nó
+
         except User.DoesNotExist:
             # Đối tượng không tồn tại
             serializer = UserSerializer(data=data_received)
@@ -61,3 +63,20 @@ def getFollowMother(request, pk):
     thucung = ThuCung.objects.get(id=pk)
     motherthucung = ThuCung.objects.filter(id=thucung.mother)
     return JsonResponse(motherthucung)
+@api_view(['GET'])
+def check(request):
+    owner = '0x1B5DA21C1dBF8F1B88b0c7eE0A70830C6bDDEe70'
+    father = '0x1234567890123456789012345678901234567890'
+    mother = '0x1234567890123456789012345678901234567890'
+    information = "information"
+    key = '0x4f473bf56b3a5454f88a94d99aebb3b0c57c131b7e436cecfd59be1790bcfe16'
+    Pet = PetProvider().get_pet_MyInformation(owner,father,mother,information,key)
+    return HttpRequest(Pet)
+@api_view(['GET'])
+def update(request):
+    newowner = '0x1B5DA21C1dBF8F1B88b0c7eE0A70830C6bDDEe70'
+    information = "newinformation"
+    key = '0x4f473bf56b3a5454f88a94d99aebb3b0c57c131b7e436cecfd59be1790bcfe16'
+    Pet = PetProvider().update_pet(information,newowner,key)
+    return HttpRequest(Pet)
+    
